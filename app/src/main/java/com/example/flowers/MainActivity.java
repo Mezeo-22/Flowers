@@ -5,7 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progBar;
+    private Button btn;
     RecyclerView recycView;
 
     List<Flower> flowers;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progBar = (ProgressBar) findViewById(R.id.progressBar);
-        progBar.setVisibility(View.VISIBLE);
+        btn = (Button)findViewById(R.id.button);
 
         flowers = new ArrayList<>();
 
@@ -51,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Flower>> call, Response<List<Flower>> response) {
                 if (response.isSuccessful()) {
+                    progBar.setVisibility(View.INVISIBLE);
                     flowers.addAll(response.body());
                     recycView.getAdapter().notifyDataSetChanged();
-                    progBar.setVisibility(View.INVISIBLE);
                 } else {
+
                     ResponseBody errorBody = response.errorBody();
                     try {
                         Toast.makeText(MainActivity.this, errorBody.string(),
@@ -71,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Что-то пошло не так",
                         Toast.LENGTH_SHORT).show();
                 progBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
