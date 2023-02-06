@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,8 +28,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private ProgressBar progBar;
-    private Button btn;
-    RecyclerView recycView;
+    /*private Button btn;*/
+    ListView recycView;
 
     List<Flower> flowers;
 
@@ -35,18 +39,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progBar = (ProgressBar) findViewById(R.id.progressBar);
-        btn = (Button)findViewById(R.id.button);
+        progBar.setVisibility(View.INVISIBLE);
+        /*btn = (Button)findViewById(R.id.button);*/
 
         flowers = new ArrayList<>();
 
-        recycView = (RecyclerView) findViewById(R.id.recView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recycView.setLayoutManager(layoutManager);
-
-        FlowerAdapter adapter = new FlowerAdapter(flowers);
-        recycView.setAdapter(adapter);
-
+        recycView = (ListView) findViewById(R.id.recView);
         progBar.setVisibility(View.VISIBLE);
+        /*LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recycView.setLayoutManager(layoutManager);*/
+
+        /*FlowerAdapter adapter = new FlowerAdapter(flowers);
+        recycView.setAdapter(adapter);*/
 
         FlowersAPI flowersAPI = FlowersAPI.retrofit.create(FlowersAPI.class);
         final Call<List<Flower>> call = flowersAPI.getData();
@@ -54,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Flower>> call, Response<List<Flower>> response) {
                 if (response.isSuccessful()) {
-                    progBar.setVisibility(View.INVISIBLE);
+
                     flowers.addAll(response.body());
-                    recycView.getAdapter().notifyDataSetChanged();
+                    FlowerAdapter adapter= new FlowerAdapter(MainActivity.this, flowers);
+                    recycView.setAdapter(adapter);
+                    progBar.setVisibility(View.INVISIBLE);
                 } else {
 
                     ResponseBody errorBody = response.errorBody();
@@ -75,13 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Что-то пошло не так",
                         Toast.LENGTH_SHORT).show();
                 progBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }

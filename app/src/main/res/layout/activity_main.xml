@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/recView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,16 +26,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar">
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recView" />
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
